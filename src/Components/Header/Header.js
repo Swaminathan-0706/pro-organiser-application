@@ -1,18 +1,25 @@
 import React from 'react';
-import styles from '../Header/Header.module.css'
+import styles from '../Header/Header.module.css';
+import {NavLink} from 'react-router-dom';
 
 function Header() {
     return (
-        <div className={styles.header}>
-            <h1 className={styles.span}>Pro-Organizer</h1>
-                <div className={styles.nav}>
-                    <div className={styles.navItem}>Home</div>
-                    <div className={styles.navItem}>Create a board</div>
-                
-
+        <>
+        <div className={styles.Navbar}>
+                    <p className={styles.Title}>Pro Organizer</p>
+                    <div className={styles.NavItemContainer}>
+                        <NavLink exact to="/" activeClassName={styles.Active}>
+                        <div className={styles.NavItem}>Home</div>
+                        </NavLink>
+                        <NavLink to="/createboard" activeClassName={styles.Active}>
+                            <div className={styles.NavItem}>Create a Board</div>
+                        </NavLink>
+                        <NavLink to="/login" activeClassName={styles.Active}>
+                            <div className={styles.NavItem}>admin@gmail.com</div>
+                        </NavLink>
+                    </div>
                 </div>
-            
-        </div>
+        </>
     )
 }
 
