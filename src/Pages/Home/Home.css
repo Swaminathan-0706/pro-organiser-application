@@ -8,19 +8,28 @@
 #para{
     font-size: 2rem;
     margin-left: 2.8%;
-
-    
 }
-#btnBoard{
+.btnBoard{
     height: 10rem;
     width:20rem;
-    background: linear-gradient(45deg, #F3CC79, transparent);;
+    background-color: whitesmoke;
+    border:1px solid black;
     border-radius: 5px;
     font-size: 1.5rem;
     
+ }
+ .txt{
+     display: inline-block;
+     margin-top: 5rem;
+ }
+a{
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    
     
 }
-#btnBoard:hover{
+.btnBoard:hover{
     cursor: pointer;
     box-shadow: 5px 5px 4px 5px #868080;
 }

@@ -1,12 +1,15 @@
 import React from 'react';
-import {Route,Link} from 'react-router-dom';
 import './Board.css'
 
-function Board() {
+function Board(props) {
+    console.log(props);
     return (
-        <div>
+        <>  
+            <div className="nav">
             <h1>Board</h1>
-        </div>
+            <button className="delBoard">Delete Board</button>
+            </div>
+        </>
     )
 }
 

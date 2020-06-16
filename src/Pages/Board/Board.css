@@ -1,0 +1,22 @@
+.nav{
+    margin-left: 2.8%;
+    display: inline-block;
+}
+.nav h1{
+    margin-top: 1.5rem;
+    display: inline-block;
+}
+.delBoard{
+    margin-top: -0.2rem;
+    margin-left: 67rem;
+    border-radius: 10px;
+    width: 10rem;
+    height: 2.5rem;
+    background-color: rgb(221, 27, 27);
+    color: white;
+    font-size: larger;
+}
+.delBoard:hover{
+    cursor: pointer;
+    box-shadow: 2px 2px black;
+}

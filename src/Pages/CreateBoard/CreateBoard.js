@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState} from 'react';
 import './CreateBoard.css';
 import firebase from '/../Users/Bala/Desktop/pro-organiser-application/src/Firestore';
 
@@ -12,11 +12,11 @@ function CreateBoard() {
     e.preventDefault();
     let splitByComma=[];
     splitByComma=(members.split(','));
-   const db = firebase.firestore();
+    const db = firebase.firestore();
     db.settings({
     timestampsInSnapshots: true
     });
-    const userRef = db.collection('boardDetails').add({
+    const dbColl = db.collection('boardDetails').add({
     boardName : name,
     teamMembers:splitByComma,
     boardType:type
