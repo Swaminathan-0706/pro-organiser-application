@@ -1,57 +1,75 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
-import './Home.css';
-import Board from '../Board/Board';
-import {Route, Link} from 'react-router-dom';
+import styles from './Home.module.css';
+import {Link} from 'react-router-dom';
 
     function Home() {
-    const[objectData,setData]=useState([])
-    const[empty,setEmpty]=useState(false)
+    const[boardData,setBoardData]=useState([])
+    const[emptyBoard,setEmptyBoard]=useState(false)
     
-    
-    useEffect(()=>{
-        let dataObj=[];
-        let tempArr=[];
-        axios.get(`https://firestore.googleapis.com/v1/projects/pro-organizer-app-ffebb/databases/(default)/documents/boardDetails/`)
-        .then(response => { 
-            tempArr=response.data.documents;        
-            for (let index = 0; index < tempArr.length; index++) {
-            dataObj.push({
-                 boardName:tempArr[index].fields.boardName["stringValue"],
-                 id:(tempArr[index].name).substring(76)
-             })
-            }
-            if(tempArr.length===0){
-                setEmpty(false);
-            }
-            setData(dataObj);
+     
+      useEffect(()=>{
+        let source = axios.CancelToken.source();
+          let boardArray=[];
+          let tempArray=[];
+          axios.get(`https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/boardDetails/`,
+          {
+            cancelToken: source.token
+          })
+          .then(response => { 
             
-    })
-        .catch(error =>console.log(error));
-   },[])
-     return (
+              if(Object.keys(response.data).length===0)
+              {
+                setEmptyBoard(true);
+              }
+              else
+              {
+                tempArray=response.data.documents; 
+                for (let index = 0; index < tempArray.length; index++)
+                {
+                   boardArray.push({
+                   boardName:tempArray[index].fields.boardName["stringValue"],
+                   id:(tempArray[index].name).substring(76),
+                   teamMembers:Object.values(tempArray[index].fields.teamMembers["arrayValue"].values)
+                })
+                }
+                console.log(boardArray);
+                setBoardData(boardArray)
+              }  
+          })  
+            .catch(error =>console.log(error));
+         
+        return () => {
+          source.cancel();
+        };
+      },[setBoardData])
+      return (
         <>
-        { (empty)?<p id="emptymsg">You haven't created any boards. Kindly click on the 'Create Board' button
+        { (emptyBoard)?<p className={styles.emptymsg}>You haven't created any boards. Kindly click on the 'Create Board' button
           in the navigation bar to create a board.</p>:
           <>
-          <p id="para">Boards</p>
-          
-          <div className="ctrBoard">
-          {objectData.map((x)=>(
-                 <Link className='btnBoard' 
-                  to={'/board/' + x.id}
+          <p className={styles.para}>Boards</p>
+          <div className={styles.ctrBoard}>
+          {boardData.map((x)=>(
+                 <Link className={styles.btnBoard} 
+                  to={
+                      {pathname:`/board/${x.id}`,
+                      state:{
+                        id:x.id,
+                        boardName:x.boardName,
+                        teamMembers:x.teamMembers
+                      }
+                    }
+                    }
                   key={x.id}>
                   {x.boardName}
-                  <div className="txt">{x.name}</div>
+                  <div className={styles.txt}>{x.name}</div>
                   </Link>
-                
           ))}
           </div>
-          </>
-        }
-        <Route exact path='/board' component={Board}/>
+          </>    
+    }
          </>
-          
     )
 }
 

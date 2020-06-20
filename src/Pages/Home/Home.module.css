@@ -5,35 +5,35 @@
     grid-column-gap: 50px;
     grid-row-gap: 50px;
 }
-#para{
+.para{
     font-size: 2rem;
     margin-left: 2.8%;
 }
 .btnBoard{
     height: 10rem;
     width:20rem;
-    background-color: whitesmoke;
+    background: linear-gradient(45deg, #ffc767, transparent);
     border:1px solid black;
     border-radius: 5px;
     font-size: 1.5rem;
+    
+ }
+ .btnBoard:hover{
+    background: linear-gradient(45deg, black, transparent);
+    color: white;
+    
     
  }
  .txt{
      display: inline-block;
      margin-top: 5rem;
  }
-a{
-    text-decoration: none;
-    color: black;
-    text-align: center;
-    
-    
-}
+
 .btnBoard:hover{
     cursor: pointer;
     box-shadow: 5px 5px 4px 5px #868080;
 }
-#emptymsg{
+.emptyMsg{
     font-size: 1.5rem;
     margin-left: 2.8%;
     border: 2px solid black;

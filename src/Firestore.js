@@ -1,16 +1,16 @@
-import firebase from 'firebase';
+import firebase, { firestore } from 'firebase';
 
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyCQ8PcPex3e1ypg_9ELxgLBEv2Uk9n8JG0",
-    authDomain: "pro-organizer-app-ffebb.firebaseapp.com",
-    databaseURL: "https://pro-organizer-app-ffebb.firebaseio.com",
-    projectId: "pro-organizer-app-ffebb",
-    storageBucket: "pro-organizer-app-ffebb.appspot.com",
-    messagingSenderId: "470408867315",
-    appId: "1:470408867315:web:29f79372d189c9fae23686"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+ // Your web app's Firebase configuration
+ var firebaseConfig = {
+  apiKey: "AIzaSyDVuTLQET_rJFMdeJAQaYkA1hXZrUkYkNw",
+  authDomain: "pro-organizer-app-430d4.firebaseapp.com",
+  databaseURL: "https://pro-organizer-app-430d4.firebaseio.com",
+  projectId: "pro-organizer-app-430d4",
+  storageBucket: "pro-organizer-app-430d4.appspot.com",
+  messagingSenderId: "171390799095",
+  appId: "1:171390799095:web:8c9e5833b1b2bffcedd7f2"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-  export default firebase;
+export default firebase;

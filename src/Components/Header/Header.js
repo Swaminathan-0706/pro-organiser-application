@@ -6,7 +6,7 @@ function Header() {
     return (
         <>
         <div className={styles.Navbar}>
-                    <p className={styles.Title}>Pro Organizer</p>
+                    <NavLink exact to="/" className={styles.Title}>Pro Organizer</NavLink>
                     <div className={styles.NavItemContainer}>
                         <NavLink exact to="/" activeClassName={styles.Active}>
                         <div className={styles.NavItem}>Home</div>
