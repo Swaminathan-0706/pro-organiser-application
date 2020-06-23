@@ -12,10 +12,11 @@ function CreateColumnModal(props) {
         const db = firebase.firestore();
         db.collection('columnDetails').add({
         colName : colName,
-        boardName:props.boardName
+        id:props.id
      })
      alert("Column Added Successfully");
      props.closeColumnModal();
+     props.getColumnDetails();
     }
     return (
         <>  

@@ -6,9 +6,7 @@ import {Link} from 'react-router-dom';
     function Home() {
     const[boardData,setBoardData]=useState([])
     const[emptyBoard,setEmptyBoard]=useState(false)
-    
-     
-      useEffect(()=>{
+       useEffect(()=>{
         let source = axios.CancelToken.source();
           let boardArray=[];
           let tempArray=[];
@@ -42,10 +40,10 @@ import {Link} from 'react-router-dom';
         return () => {
           source.cancel();
         };
-      },[setBoardData])
+      },[boardData])
       return (
         <>
-        { (emptyBoard)?<p className={styles.emptymsg}>You haven't created any boards. Kindly click on the 'Create Board' button
+        { (emptyBoard)?<p className={styles.emptyMsg}>You haven't created any boards. Kindly click on the 'Create Board' button
           in the navigation bar to create a board.</p>:
           <>
           <p className={styles.para}>Boards</p>
