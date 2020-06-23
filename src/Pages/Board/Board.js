@@ -12,11 +12,12 @@ class Board extends Component {
         this.state = {
             columnDetails:[],
             columnModal:false,
-            cardModal:false
+            cardModal:false,
+            cardDetails:[]
 
         }
     }
-    
+    //Delete Board Data
     delBoard=()=>{
         console.log("delete board");
     }
@@ -26,26 +27,38 @@ class Board extends Component {
     closeCardModal=()=>{
         this.setState({cardModal:false});
     }
+    //Function to get updated Card details
+    getCardDetails=()=>{
+
+    }
+    //Function to get updated board details
     getColumnDetails=()=>{
+        console.log("get column details");
         let dataObj=[];
         let tempArray=[];
         axios.get('https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/columnDetails/')
         .then(response=>{
-            tempArray=response.data.documents;   
-            for (let index = 0; index < tempArray.length; index++) { 
-            dataObj.push({
-                 colName:tempArray[index].fields.colName["stringValue"],
-                 id:tempArray[index].fields.id["stringValue"]
-              })
+            if(Object.keys(response.data).length===0)
+              {
+                
+              }
+              else{
+                tempArray=response.data.documents;   
+                for (let index = 0; index < tempArray.length; index++) { 
+                dataObj.push({
+                     colName:tempArray[index].fields.colName["stringValue"],
+                     boardid:tempArray[index].fields.boardid["stringValue"]
+                  })
+                }
+                this.setState({
+                    columnDetails:dataObj
+                })
             }
-            this.setState({
-                columnDetails:dataObj
+                console.log(this.state.columnDetails);
             })
-            console.log(this.state.columnDetails);
-        })
-        .catch(error=>console.log(error));
+            .catch(error=>console.log(error));    
+   }
 
-    }
     componentDidMount(){
         
         this.getColumnDetails();
@@ -54,7 +67,7 @@ class Board extends Component {
     render() {
         return (
             <>
-            { (this.state.columnModal)&&<CreateColumnModal id={this.props.location.state.id} boardName={this.props.location.state.boardName} closeColumnModal={this.closeColumnModal} getColumnDetails={()=>this.getColumnDetails}/>}
+            { (this.state.columnModal)&&<CreateColumnModal boardid={this.props.location.state.id} boardName={this.props.location.state.boardName} closeColumnModal={this.closeColumnModal} getColumnDetails={this.getColumnDetails}/>}
             { (this.state.cardModal)&&<CreateCard boardName={this.props.location.state.boardName} teamMembers={this.props.location.state.teamMembers}  closeCardModal={this.closeCardModal}/>}
             <>
             <div className="nav">
@@ -63,7 +76,7 @@ class Board extends Component {
             </div>
             <div className="add">
                 <>
-            {this.state.columnDetails.filter(x=>(x.id===this.props.location.state.id)).map(x=>(
+            {this.state.columnDetails.filter(x=>(x.boardid===this.props.location.state.id)).map(x=>(
                 <div key={x.colName} className="colCard">
                 <h3  className="colTitle">{x.colName}</h3>
                 <i  id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>

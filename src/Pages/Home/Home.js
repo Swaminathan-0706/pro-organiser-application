@@ -7,13 +7,9 @@ import {Link} from 'react-router-dom';
     const[boardData,setBoardData]=useState([])
     const[emptyBoard,setEmptyBoard]=useState(false)
        useEffect(()=>{
-        let source = axios.CancelToken.source();
           let boardArray=[];
           let tempArray=[];
-          axios.get(`https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/boardDetails/`,
-          {
-            cancelToken: source.token
-          })
+          axios.get(`https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/boardDetails/`)
           .then(response => { 
             
               if(Object.keys(response.data).length===0)
@@ -36,10 +32,7 @@ import {Link} from 'react-router-dom';
               }  
           })  
             .catch(error =>console.log(error));
-         
-        return () => {
-          source.cancel();
-        };
+        
       },[boardData])
       return (
         <>

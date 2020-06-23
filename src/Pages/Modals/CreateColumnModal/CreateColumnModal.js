@@ -4,7 +4,7 @@ import styles from './CreateColumnModal.module.css';
 import firebase from '/../Users/Bala/Desktop/pro-organiser-application/src/Firestore';
 
 function CreateColumnModal(props) {
-    
+    console.log(props);
     const [colName,setColName]=useState('');
     //Function to Add column to Database
     const addColumnDb=(e)=>{
@@ -12,11 +12,13 @@ function CreateColumnModal(props) {
         const db = firebase.firestore();
         db.collection('columnDetails').add({
         colName : colName,
-        id:props.id
+        boardid:props.boardid
      })
-     alert("Column Added Successfully");
-     props.closeColumnModal();
-     props.getColumnDetails();
+     alert("Your Column is added to Database Successfully");
+     setTimeout(()=>{
+        props.closeColumnModal();
+        props.getColumnDetails();
+     },1500)
     }
     return (
         <>  
