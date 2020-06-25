@@ -1,45 +1,42 @@
 import React,{useState,useEffect} from 'react';
-import axios from 'axios';
 import styles from './Home.module.css';
 import {Link} from 'react-router-dom';
+import {getBoards} from '../../Funct_Reuse/Functions';
+import Loader from '../Modals/Loader/Loader';
 
-    function Home() {
-    const[boardData,setBoardData]=useState([])
-    const[emptyBoard,setEmptyBoard]=useState(false)
-       useEffect(()=>{
-          let boardArray=[];
-          let tempArray=[];
-          axios.get(`https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/boardDetails/`)
-          .then(response => { 
-            
-              if(Object.keys(response.data).length===0)
-              {
-                setEmptyBoard(true);
-              }
-              else
-              {
-                tempArray=response.data.documents; 
-                for (let index = 0; index < tempArray.length; index++)
-                {
-                   boardArray.push({
-                   boardName:tempArray[index].fields.boardName["stringValue"],
-                   id:(tempArray[index].name).substring(76),
-                   teamMembers:Object.values(tempArray[index].fields.teamMembers["arrayValue"].values)
-                })
-                }
-                console.log(boardArray);
-                setBoardData(boardArray)
-              }  
-          })  
-            .catch(error =>console.log(error));
-        
-      },[boardData])
-      return (
+function Home(){
+
+    const [boardData,setBoardData]=useState([]);
+    const [loading,setLoading]=useState(true);
+      
+      useEffect(() => {
+        getBoards()
+          .then((boardData) => {
+            setBoardData(boardData);
+            setLoading(false);
+          })
+          .catch(() => {
+            setBoardData([]);
+          });
+      }, [boardData]);
+
+      return(
+
         <>
-        { (emptyBoard)?<p className={styles.emptyMsg}>You haven't created any boards. Kindly click on the 'Create Board' button
-          in the navigation bar to create a board.</p>:
-          <>
+        {loading ?(
+        <Loader/>
+        ):(
+          <> 
           <p className={styles.para}>Boards</p>
+          {
+            boardData.length===0 && (
+            <p className={styles.emptyMsg}>
+            You haven't created any boards.Kindly 
+            click on the 'Create Board' 
+            button in the navigation bar to create a board.
+            </p>
+          )}
+          
           <div className={styles.ctrBoard}>
           {boardData.map((x)=>(
                  <Link className={styles.btnBoard} 
@@ -54,14 +51,15 @@ import {Link} from 'react-router-dom';
                     }
                   key={x.id}>
                   {x.boardName}
-                  <div className={styles.txt}>{x.name}</div>
+                  <div className={styles.txt}></div>
                   </Link>
           ))}
           </div>
-          </>    
-    }
-         </>
-    )
-}
+          </>
 
-export default Home
+        )}
+      </>
+  )      
+
+}
+export default Home;

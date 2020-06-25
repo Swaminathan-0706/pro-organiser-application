@@ -29,11 +29,10 @@ class Board extends Component {
     }
     //Function to get updated Card details
     getCardDetails=()=>{
-
+        
     }
     //Function to get updated board details
     getColumnDetails=()=>{
-        console.log("get column details");
         let dataObj=[];
         let tempArray=[];
         axios.get('https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/columnDetails/')
@@ -42,19 +41,21 @@ class Board extends Component {
               {
                 
               }
-              else{
+              else
+              {
                 tempArray=response.data.documents;   
                 for (let index = 0; index < tempArray.length; index++) { 
                 dataObj.push({
                      colName:tempArray[index].fields.colName["stringValue"],
-                     boardid:tempArray[index].fields.boardid["stringValue"]
+                     boardid:tempArray[index].fields.boardid["stringValue"],
+                     columnId:(tempArray[index].name).substring(77)
                   })
                 }
                 this.setState({
                     columnDetails:dataObj
                 })
+                console.log(dataObj);
             }
-                console.log(this.state.columnDetails);
             })
             .catch(error=>console.log(error));    
    }
@@ -68,7 +69,7 @@ class Board extends Component {
         return (
             <>
             { (this.state.columnModal)&&<CreateColumnModal boardid={this.props.location.state.id} boardName={this.props.location.state.boardName} closeColumnModal={this.closeColumnModal} getColumnDetails={this.getColumnDetails}/>}
-            { (this.state.cardModal)&&<CreateCard boardName={this.props.location.state.boardName} teamMembers={this.props.location.state.teamMembers}  closeCardModal={this.closeCardModal}/>}
+            { (this.state.cardModal)&&<CreateCard boardid={this.props.location.state.id} teamMembers={this.props.location.state.teamMembers}  closeCardModal={this.closeCardModal}/>}
             <>
             <div className="nav">
             <h1 className="header">{this.props.location.state.boardName}</h1>

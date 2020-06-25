@@ -12,10 +12,11 @@ function App() {
     <Router>
       <Header/>
       <Switch>
-      <Route exact path="/" component={Home}/>
+      
       <Route path="/login" component={Login}/>
       <Route path="/createboard" component={Create}/>
-      <Route path="/board/:boardid" component={Board}/>sss
+      <Route path="/board/:boardid" component={Board}/>
+      <Route exact path="*" component={Home}/>
       </Switch>
     </Router>
   );

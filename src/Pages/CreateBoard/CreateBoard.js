@@ -1,30 +1,43 @@
 import React,{useState} from 'react';
 import styles from './CreateBoard.module.css';
-import firebase from '/../Users/Bala/Desktop/pro-organiser-application/src/Firestore';
+import {addBoard} from '../../Funct_Reuse/Functions';
 
-function CreateBoard(props) {
+function CreateBoard({history}) {
+  
   const[name,setName]=useState('');
   const[members,setNum]=useState('');
   const[type,setType]=useState('');
+
+
   //Funtion to add Board details to Database
-  const addBoard=(e)=>{
-    e.preventDefault();
-    let splitByComma=[];
-    splitByComma=(members.split(','));
-    const db = firebase.firestore();
-    db.collection('boardDetails').add({
-    boardName : name,
-    teamMembers:splitByComma,
-    boardType:type
-  }); 
-  alert(`${name} added to Database`);
-  props.history.push('/');
-  }
+  const saveBoard=()=>{
+   const team=members.split(',').map(x => x.trim());
+   const boardDetails={
+     boardName:name,
+     teamMembers:team,
+     boardType:type
+   }
+   addBoard(boardDetails)
+      .then((created) => {
+        if (created)
+         {
+          history.push('/');
+        } 
+        else 
+        {
+          alert('Could not add Board');
+        }
+      })
+      .catch((err) => {
+        alert('Could not add Board. Some error occured.');
+      });
+   
+ } 
 
  return (
         <div className={styles.ctr}>
           <p>Create a Board</p>
-          <form onSubmit={addBoard}>
+          <form onSubmit={saveBoard}>
             <label htmlFor="name">Enter a name for your Board</label>
             <input required className={styles.fields} type="text" id="name" value={name} onChange={e=>{setName(e.target.value)}}  placeholder="eg.Agile Sprint Board"></input>
             <label htmlFor="team">Add your team members</label>

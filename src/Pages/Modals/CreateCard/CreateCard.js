@@ -1,7 +1,6 @@
 import React,{useState} from 'react';
 import './CreateCard.css';
 import Backdrop from '../Backdrop/Backdrop';
-import firebase from '/../Users/Bala/Desktop/pro-organiser-application/src/Firestore';
 
 
 function CreateCard(props) {
@@ -28,25 +27,13 @@ function CreateCard(props) {
         
     }
     //Function to add Card Data in Database
-    const addCardDB=(e)=>{
-        e.preventDefault();
-        const db = firebase.firestore();
-        db.collection('cardDetails').add({
-            cardTitle:cardTitle,
-            cardDesc:cardDesc,
-            cardDueDate:cardDueDate,
-            cardMembers:cardMembers,
-            boardName:props.boardName
-     })
-     alert("Card Added Successfully");
-     props.closeCardModal()
-
-    }
+    
+     
     
      return (
         <div>
          <Backdrop/>  
-         <form onSubmit={addCardDB} className="cardModal">
+         <form  className="cardModal">
                 <div className="colHeader">
                     <span className="top">Add Card</span>
                     <button onClick={()=>props.closeCardModal()} id="close">x</button>
