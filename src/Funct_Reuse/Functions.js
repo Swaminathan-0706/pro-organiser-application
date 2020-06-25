@@ -1,6 +1,6 @@
 import db from '../Firebase/config';
 
-//Function to Add board details in Firestore database
+//Function to Add board details in Firestore
 export const addBoard=async(board)=>{
     try
     {
@@ -13,7 +13,7 @@ export const addBoard=async(board)=>{
     }
 }
 
-//Function to getBoard Details from FireStore
+//Function to get all getBoards Details from FireStore
 export const getBoards=async()=>{
      try
     {
@@ -27,4 +27,19 @@ export const getBoards=async()=>{
         return [];
     }
 
+}
+
+//Function to single board using board id from FireStore
+
+export const getBoard=async(id)=>{
+    try
+    {
+        const board = await db.collection('boardsDetails').doc(id).get();
+        return { ...board.data(), id: board.id };
+    }
+    catch(error)
+    {
+        return error;
+        
+    }
 }
