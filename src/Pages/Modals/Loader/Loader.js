@@ -1,9 +1,15 @@
 import React from 'react';
 import './Loader.css';
+import Backdrop from '../Backdrop/Backdrop';
 
 function Loader() {
     return (
-        <div className="loader"></div>
+        <>
+        <Backdrop/>
+        <div className="loader">
+            
+        </div>
+        </>
     )
 }
 

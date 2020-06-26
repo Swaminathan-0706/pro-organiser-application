@@ -12,6 +12,19 @@ export const addBoard=async(board)=>{
         return error;
     }
 }
+//Function to Add Column details in Firstore
+
+export const addColumn=async(column)=>{
+    try
+    {
+        const columnref=await db.collection('columnDetails').add(column);
+        return columnref.id;
+    }
+    catch(error)
+    {
+        return error;
+    }
+}
 
 //Function to get all getBoards Details from FireStore
 export const getBoards=async()=>{

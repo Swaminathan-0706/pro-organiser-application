@@ -1,99 +1,61 @@
-import React, { Component } from 'react';
+import React, { useState,useContext } from 'react';
 import './Board.css';
-import axios from 'axios';
+import {addColumn} from '../../Funct_Reuse/Functions'; 
+import Loader from '../Modals/Loader/Loader';
 import CreateColumnModal from '../Modals/CreateColumnModal/CreateColumnModal'
 import CreateCard from '../Modals/CreateCard/CreateCard';
 
-class Board extends Component {
 
-    constructor(props) {
-        
-        super(props)
-        this.state = {
-            columnDetails:[],
-            columnModal:false,
-            cardModal:false,
-            cardDetails:[]
+function Board (props){
 
-        }
-    }
-    //Delete Board Data
-    delBoard=()=>{
-        console.log("delete board");
-    }
-    closeColumnModal=()=>{
-        this.setState({columnModal:false});
-    }
-    closeCardModal=()=>{
-        this.setState({cardModal:false});
-    }
-    //Function to get updated Card details
-    getCardDetails=()=>{
+    const [columnDetails,setColumnDetails]=useState([]);
+    const [columnModal,setColumnModal]=useState(false);
+    const [cardModal,setCardModal]=useState(false);
+
+
+    const closeColumnModal=()=>{
+        setColumnModal(false);
         
     }
-    //Function to get updated board details
-    getColumnDetails=()=>{
-        let dataObj=[];
-        let tempArray=[];
-        axios.get('https://firestore.googleapis.com/v1/projects/pro-organizer-app-430d4/databases/(default)/documents/columnDetails/')
-        .then(response=>{
-            if(Object.keys(response.data).length===0)
-              {
-                
-              }
-              else
-              {
-                tempArray=response.data.documents;   
-                for (let index = 0; index < tempArray.length; index++) { 
-                dataObj.push({
-                     colName:tempArray[index].fields.colName["stringValue"],
-                     boardid:tempArray[index].fields.boardid["stringValue"],
-                     columnId:(tempArray[index].name).substring(77)
-                  })
-                }
-                this.setState({
-                    columnDetails:dataObj
-                })
-                console.log(dataObj);
-            }
-            })
-            .catch(error=>console.log(error));    
-   }
-
-    componentDidMount(){
-        
-        this.getColumnDetails();
+    const closeCardModal=()=>{
+        setCardModal(false);
     }
     
-    render() {
-        return (
+    
+    return(
+        <>
+        { (columnModal)&&<CreateColumnModal boardid={props.location.state.id} boardName={props.location.state.boardName} closeColumnModal={closeColumnModal} />}
+          { (cardModal)&&<CreateCard boardid={props.location.state.id} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
             <>
-            { (this.state.columnModal)&&<CreateColumnModal boardid={this.props.location.state.id} boardName={this.props.location.state.boardName} closeColumnModal={this.closeColumnModal} getColumnDetails={this.getColumnDetails}/>}
-            { (this.state.cardModal)&&<CreateCard boardid={this.props.location.state.id} teamMembers={this.props.location.state.teamMembers}  closeCardModal={this.closeCardModal}/>}
-            <>
-            <div className="nav">
-            <h1 className="header">{this.props.location.state.boardName}</h1>
-            <button onClick={this.delBoard} className="delBoard">Delete Board</button>
-            </div>
-            <div className="add">
+             <div className="nav">
+                <h1 className="header">{props.location.state.boardName}</h1>
+                <button  className="delBoard">Delete Board</button>
+            </div>            
+             <div className="add">
                 <>
-            {this.state.columnDetails.filter(x=>(x.boardid===this.props.location.state.id)).map(x=>(
+                {columnDetails.filter(x=>(x.boardid===props.location.state.id)).map(x=>(
                 <div key={x.colName} className="colCard">
                 <h3  className="colTitle">{x.colName}</h3>
                 <i  id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
-                <button onClick={()=>this.setState({cardModal:true})} className="cardBtn">Add a Card</button> 
-               </div>
+                <button  className="cardBtn">Add a Card</button> 
+                </div>
             ))}
             </>
-                <button onClick={()=>this.setState({columnModal:true})} className="addBtn">Add a column</button>
+                 <button onClick={()=>setColumnModal(true)}  className="addBtn">Add a column</button>
                 
             </div>
-            </>
+        </>
                 
-            </>
-        )
-    }
+        </>
+    )
 }
+
+
+
+
+
+
+
 
 export default Board;
 
