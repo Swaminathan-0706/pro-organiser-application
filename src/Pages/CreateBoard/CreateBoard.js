@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import styles from './CreateBoard.module.css';
 import {addBoard} from '../../Funct_Reuse/Functions';
 
-function CreateBoard({history}) {
+function CreateBoard(props) {
   
   const[name,setName]=useState('');
   const[members,setNum]=useState('');
@@ -10,26 +10,29 @@ function CreateBoard({history}) {
 
 
   //Funtion to add Board details to Database
-  const saveBoard=()=>{
+  const saveBoard=(e)=>{
+    e.preventDefault();
    const team=members.split(',').map(x => x.trim());
    const boardDetails={
      boardName:name,
      teamMembers:team,
      boardType:type
    }
-   addBoard(boardDetails)
+      addBoard(boardDetails)
       .then((created) => {
         if (created)
-         {
-          history.push('/');
+        {
+          props.history.push('/');
         } 
         else 
         {
           alert('Could not add Board');
+          
         }
       })
       .catch((err) => {
         alert('Could not add Board. Some error occured.');
+        
       });
    
  } 

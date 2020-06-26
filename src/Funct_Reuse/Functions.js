@@ -26,7 +26,7 @@ export const addColumn=async(column)=>{
     }
 }
 
-//Function to get all getBoards Details from FireStore
+//Function to get all getBoards Details from FireStore(Like API)
 export const getBoards=async()=>{
      try
     {
@@ -42,8 +42,7 @@ export const getBoards=async()=>{
 
 }
 
-//Function to single board using board id from FireStore
-
+//Function to single board using board id from FireStore(Like API)
 export const getBoard=async(id)=>{
     try
     {
@@ -58,17 +57,29 @@ export const getBoard=async(id)=>{
 }
 
 
-
+//Function to get all columns details from FireStore(Like API)
 export const getColumns = async (boardId) => {
-    try {
-      const snapshot = await db
-        .collection('columns')
-        .where('boardId', '==', boardId)
-        .orderBy('created')
-        .get();
+    try 
+    {
+      const snapshot = await db.collection('columnDetails').where('boardId', '==', boardId).get();
       const boards = snapshot.docs.map((d) => ({ ...d.data(), id: d.id }));
       return boards;
-    } catch (error) {
+    } 
+    catch (error)
+    {
       return [];
+    }
+  };
+
+  //
+  export const deleteBoard = async (id) => {
+    try
+    {
+      await db.collection('boardDetails').doc(id).delete();
+      return true;
+    } 
+    catch (error)
+     {
+       return error;
     }
   };
