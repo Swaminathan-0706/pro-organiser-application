@@ -56,3 +56,19 @@ export const getBoard=async(id)=>{
         
     }
 }
+
+
+
+export const getColumns = async (boardId) => {
+    try {
+      const snapshot = await db
+        .collection('columns')
+        .where('boardId', '==', boardId)
+        .orderBy('created')
+        .get();
+      const boards = snapshot.docs.map((d) => ({ ...d.data(), id: d.id }));
+      return boards;
+    } catch (error) {
+      return [];
+    }
+  };

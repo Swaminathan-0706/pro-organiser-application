@@ -1,18 +1,17 @@
 import React,{useState} from 'react';
 import Backdrop from '../Backdrop/Backdrop';
 import styles from './CreateColumnModal.module.css';
-import {addColumn} from '../../../Funct_Reuse/Functions';
+
 
 function CreateColumnModal(props) {
-   
     const [colName,setColName]=useState('');
-    //Function to Add column to Database
-    const addColumnDb=(e)=>{
-        e.preventDefault();
-        console.log(colName);
-        debugger
-        addColumn(colName);
+    //Function to call AddColumn function in parent Board
+    const addColumnHandler=()=>{
+        if(!colName){
+            alert('Please Enter Column Name');
+        }
         
+            props.addColumn(colName);
     }
     return (
         <>  
@@ -28,7 +27,7 @@ function CreateColumnModal(props) {
                     <input onChange={(e)=>setColName(e.target.value)} type="text" className={styles.column_names} id="column_names"></input>
                 </div>
                 <div className={styles.colBtn}>
-                    <button onClick={addColumnDb} className={styles.CreateColumn} id="CreateColumn">Add Column</button>
+                    <button onClick={addColumnHandler} className={styles.CreateColumn} id="CreateColumn">Add Column</button>
                 </div>
             </div>
         </>
