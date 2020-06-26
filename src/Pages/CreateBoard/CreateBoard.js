@@ -1,9 +1,11 @@
 import React,{useState} from 'react';
 import styles from './CreateBoard.module.css';
 import {addBoard} from '../../Funct_Reuse/Functions';
+import Loader from '../Modals/Loader/Loader';
 
 function CreateBoard(props) {
 
+  const [loading, setLoading] = useState(false);
   const[name,setName]=useState('');
   const[members,setNum]=useState('');
   const[type,setType]=useState('');
@@ -21,6 +23,7 @@ function CreateBoard(props) {
       .then((created) => {
         if (created)
         {
+          setLoading(true);
           props.history.push('/');
         } 
         else 
@@ -37,6 +40,8 @@ function CreateBoard(props) {
  } 
 
  return (
+        <>
+        {loading?<Loader/>:
         <div className={styles.ctr}>
           <p>Create a Board</p>
           <form onSubmit={saveBoard}>
@@ -49,6 +54,9 @@ function CreateBoard(props) {
             <button type="submit" className={styles.CreateBoard} id="CreateBoard">Create</button>
           </form>  
         </div>
+        }       
+        </>
+        
     )
 }
 

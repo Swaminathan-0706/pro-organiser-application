@@ -1,14 +1,14 @@
 import React from 'react';
 import './Loader.css';
-import Backdrop from '../Backdrop/Backdrop';
 
 function Loader() {
     return (
         <>
-        <Backdrop/>
+        
         <div className="loader">
             
         </div>
+        <p className="loadingTxt">Loading...</p>
         </>
     )
 }
