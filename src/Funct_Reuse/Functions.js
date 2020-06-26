@@ -12,8 +12,8 @@ export const addBoard=async(board)=>{
         return error;
     }
 }
-//Function to Add Column details in Firstore
 
+//Function to Add Column details in Firstore
 export const addColumn=async(column)=>{
     try
     {
@@ -26,23 +26,21 @@ export const addColumn=async(column)=>{
     }
 }
 
-//Function to get all getBoards Details from FireStore(Like API)
+//Function to get all getBoards Details from FireStore(Like API CALL)
 export const getBoards=async()=>{
      try
     {
         const snapshot=await db.collection('boardDetails').get();
         const boards=snapshot.docs.map((x) => ({ ...x.data(), id: x.id }));
         return boards;        
-        
     }
     catch(error)
     {   
         return [];
     }
-
 }
 
-//Function to single board using board id from FireStore(Like API)
+//Function to single board using board id from FireStore(Like API CALL)
 export const getBoard=async(id)=>{
     try
     {
@@ -57,7 +55,7 @@ export const getBoard=async(id)=>{
 }
 
 
-//Function to get all columns details from FireStore(Like API)
+//Function to get all columns details from FireStore(Like API CALL)
 export const getColumns = async (boardId) => {
     try 
     {
@@ -71,7 +69,7 @@ export const getColumns = async (boardId) => {
     }
   };
 
-  //
+  //Function to Delete Board from FireStore Database
   export const deleteBoard = async (id) => {
     try
     {

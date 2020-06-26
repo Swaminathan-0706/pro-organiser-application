@@ -3,11 +3,10 @@ import styles from './CreateBoard.module.css';
 import {addBoard} from '../../Funct_Reuse/Functions';
 
 function CreateBoard(props) {
-  
+
   const[name,setName]=useState('');
   const[members,setNum]=useState('');
   const[type,setType]=useState('');
-
 
   //Funtion to add Board details to Database
   const saveBoard=(e)=>{
