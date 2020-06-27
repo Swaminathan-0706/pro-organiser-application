@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './Board.css';
 import {addColumn,getBoard,getColumns,deleteBoard,deleteColumn} from '../../Funct_Reuse/Functions'; 
 import Loader from '../Modals/Loader/Loader';
+import * as shortid from 'shortid';
 import CreateColumnModal from '../Modals/CreateColumnModal/CreateColumnModal'
 import CreateCard from '../Modals/CreateCard/CreateCard';
 
@@ -12,6 +13,7 @@ export default function Board (props){
     const [columns, setColumns] = useState([]);
     const [columnModal,setColumnModal]=useState(false);
     const [cardModal,setCardModal]=useState(false);
+    const [selectedColumn, setSelectedColumn] = useState(null);
     
 
     useEffect(() => {
@@ -43,12 +45,33 @@ export default function Board (props){
         .then((output)=>{
           newColumn['id'] = output;
           setColumns([...columns, newColumn]);
-          console.log(columns);
           setColumnModal(false);
         })
         
       }
-    
+      function openAddCard(selectedColumn) {
+        setCardModal(true);
+        setSelectedColumn(selectedColumn);
+        
+      }
+     //Function to Add Card in Firestore
+    async function handleAddColumn(card){
+
+      try
+      {
+        card['id'] = shortid();
+        const cards = [...selectedColumn.cards, card];
+
+      }
+      catch{
+
+      }
+
+    }  
+
+
+
+
      //Function to delete Board from Firestore
      async function deleteBoardHandler() {
         if (window.confirm('Are you sure you want to delete the board?'))
@@ -93,7 +116,7 @@ export default function Board (props){
                 <div key={x.name} className="colCard">
                 <h3  className="colTitle">{x.name}</h3>
                 <i onClick={()=>deleteColumnHandler(x)} id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
-                <button onClick={()=>setCardModal(true)} className="cardBtn">Add a Card</button> 
+                <button onClick={()=>openAddCard(x)} className="cardBtn">Add a Card</button> 
                 </div>
             ))}
             </>

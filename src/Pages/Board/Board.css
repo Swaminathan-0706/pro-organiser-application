@@ -26,15 +26,33 @@
     box-shadow: 2px 2px black;
 }
 .add{
+    margin-top: 1%;
     margin-left: 2.8%;
-    height: 50%;
-    width: 94%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr ;
+    display: flex;
+    justify-content:space-between;
+    overflow-x:auto;
+    
     
 }
+.add::after {
+    content: '';
+    flex: 0 0 10px;
+  }
+  
+  .add > * {
+    flex: 0 0 auto;
+  }
+  
+  .add > *:not(:first-child) {
+    margin-left: 10px;
+  }
+  
+  .add {
+    width: 94%;
+    height: 100%;
+  }
 .addBtn{
+    margin-bottom: 250px;
     height: 15rem;
     width: 15rem;
     border: 1px dotted black;
@@ -52,6 +70,7 @@
     height: 8rem;
     width: 20rem;
     border-radius: 10px;
+
 }
 .colCard button{
     height: 2.5rem;
