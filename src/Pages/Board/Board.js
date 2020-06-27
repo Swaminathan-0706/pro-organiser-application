@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import './Board.css';
-import {addColumn,getBoard,getColumns,deleteBoard} from '../../Funct_Reuse/Functions'; 
+import {addColumn,getBoard,getColumns,deleteBoard,deleteColumn} from '../../Funct_Reuse/Functions'; 
 import Loader from '../Modals/Loader/Loader';
 import CreateColumnModal from '../Modals/CreateColumnModal/CreateColumnModal'
 import CreateCard from '../Modals/CreateCard/CreateCard';
@@ -8,21 +8,22 @@ import CreateCard from '../Modals/CreateCard/CreateCard';
 export default function Board (props){
 
     const [loading, setLoading] = useState(false);
-    const [columnDetails,setColumnDetails]=useState([]);
+    const [boardDetails,setBoardDetails]=useState([]);
+    const [columns, setColumns] = useState([]);
     const [columnModal,setColumnModal]=useState(false);
     const [cardModal,setCardModal]=useState(false);
-    const [columns, setColumns] = useState([]);
+    
 
     useEffect(() => {
         (async function () {
-          const data = await getBoard(props.match.params.boardid);
-          setColumnDetails(data);
-          await getAllColumns(data.id, setColumns);
+          const boardId = await getBoard(props.match.params.boardid);
+          setBoardDetails(boardId);
+          await getAllColumns(boardId.id, setColumns);
           
         })();
       }, [props.match.params.boardid]);
 
-    //Function to close 
+    //Function to close Modals
     const closeColumnModal=()=>{
         setColumnModal(false);
         
@@ -32,9 +33,8 @@ export default function Board (props){
     }
     //Function to Add column in Firestore
     const handleAddCloumn=(columnName) =>{
-        
         const newColumn = {
-          boardId: columnDetails.id,
+          boardId: boardDetails.id,
           name: columnName,
           cards: [],
           created: Date.now(),
@@ -49,18 +49,31 @@ export default function Board (props){
         
       }
     
-     //
+     //Function to delete Board from Firestore
      async function deleteBoardHandler() {
         if (window.confirm('Are you sure you want to delete the board?'))
          {
           setLoading(true);
-          const val = await deleteBoard(columnDetails.id);
-          if(val){
+          const status = await deleteBoard(boardDetails.id);
+          if(status){
               props.history.push('/');
           }
         }
       } 
-    
+    //Function to delete column from Firestore
+    async function deleteColumnHandler(column){
+      const newColumnAfterDelete=columns
+      .filter(x=>x.id!==column.id)
+      .sort((a,b)=>a.created-b.created);
+
+      deleteColumn(column.id)
+      .then(()=>{
+        setColumns(newColumnAfterDelete);
+      })
+      .catch(error=>alert(error))
+      
+      
+    }
     return(
         <>
         {loading ? (
@@ -68,7 +81,7 @@ export default function Board (props){
             ) :
         (<>
         { (columnModal)&&<CreateColumnModal addColumn={handleAddCloumn} closeColumnModal={closeColumnModal} />}
-          { (cardModal)&&<CreateCard boardid={props.location.state.id} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
+          { (cardModal)&&<CreateCard  teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
             <>
              <div className="nav">
                 <h1 className="header">{props.location.state.boardName}</h1>
@@ -79,8 +92,8 @@ export default function Board (props){
                 {columns.map(x=>(
                 <div key={x.name} className="colCard">
                 <h3  className="colTitle">{x.name}</h3>
-                <i  id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
-                <button  className="cardBtn">Add a Card</button> 
+                <i onClick={()=>deleteColumnHandler(x)} id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
+                <button onClick={()=>setCardModal(true)} className="cardBtn">Add a Card</button> 
                 </div>
             ))}
             </>
@@ -95,7 +108,7 @@ export default function Board (props){
 }
 
 
-
+//Function to get All Columns
 async function getAllColumns(id, setColumns) {
     const resultColumns = await getColumns(id);
     setColumns(resultColumns);

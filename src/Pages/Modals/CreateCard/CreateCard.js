@@ -2,9 +2,8 @@ import React,{useState} from 'react';
 import './CreateCard.css';
 import Backdrop from '../Backdrop/Backdrop';
 
-
 function CreateCard(props) {
-    console.log(props);
+    
     const[cardTitle,setCardTitle]=useState('');
     const[cardDesc,setCardDesc]=useState('');
     const[cardDueDate,setDue]=useState('');
@@ -27,13 +26,16 @@ function CreateCard(props) {
         
     }
     //Function to add Card Data in Database
-    
+    function addCardHandler(){
+        console.log("Add Card Handler");
+        const card = createCard(cardTitle, cardDesc, cardDueDate, cardMembers);
+    }
      
     
      return (
         <div>
          <Backdrop/>  
-         <form  className="cardModal">
+         <form onClick={addCardHandler} className="cardModal">
                 <div className="colHeader">
                     <span className="top">Add Card</span>
                     <button onClick={()=>props.closeCardModal()} id="close">x</button>
@@ -53,8 +55,8 @@ function CreateCard(props) {
                         name="team" 
                         >
                         {props.teamMembers.map(x=>(
-                        <option value={x["stringValue"]} key={x["stringValue"]}>
-                        {x["stringValue"]}
+                        <option value={x} key={x}>
+                        {x}
                         </option>
                          ))}
                         </select>
@@ -75,4 +77,15 @@ function CreateCard(props) {
     )
 }
 
-export default CreateCard
+export default CreateCard;
+
+function createCard(dueDate, title, teamMembers, description) {
+    const date = new Date(dueDate).getTime();
+    return {
+      title,
+      description,
+      teamMembers,
+      date,
+      isArchive: false
+    };
+  }
