@@ -55,6 +55,20 @@ export const getColumns = async (boardId) => {
   }
 };
 //-------------------------------------------------------------------------------------------------------------------
+//UPDATE FUNCTIONS
+//
+export const updateColumn = async (id, column) => {
+  try 
+  {
+    await db.collection('columnDetails').doc(id).update(column);
+    return true;
+  } 
+  catch (error)
+  {
+    return error;
+  }
+};
+//-------------------------------------------------------------------------------------------------------------------
 //Function to Delete Board from FireStore Database
 export const deleteBoard = async (id) => {
   try {
@@ -77,3 +91,6 @@ export const deleteColumn=async(id)=>{
 
     }
 }
+//
+
+export const deepCopy = obj => JSON.parse(JSON.stringify(obj));

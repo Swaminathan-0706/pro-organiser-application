@@ -1,13 +1,15 @@
 import React, { useState,useEffect } from 'react';
-import './Board.css';
-import {addColumn,getBoard,getColumns,deleteBoard,deleteColumn} from '../../Funct_Reuse/Functions'; 
+import styles from './Board.module.css';
+import {addColumn,getBoard,getColumns,deleteBoard,deleteColumn,deepCopy,updateColumn} from '../../Funct_Reuse/Functions'; 
 import Loader from '../Modals/Loader/Loader';
 import * as shortid from 'shortid';
 import CreateColumnModal from '../Modals/CreateColumnModal/CreateColumnModal'
 import CreateCard from '../Modals/CreateCard/CreateCard';
+import IndividualCard from '../Modals/IndividualCard/IndividualCard';
+
 
 export default function Board (props){
-
+    
     const [loading, setLoading] = useState(false);
     const [boardDetails,setBoardDetails]=useState([]);
     const [columns, setColumns] = useState([]);
@@ -55,16 +57,24 @@ export default function Board (props){
         
       }
      //Function to Add Card in Firestore
-    async function handleAddColumn(card){
-
+    async function handleAddCard(card){
+      console.log(card);
+      
       try
       {
         card['id'] = shortid();
         const cards = [...selectedColumn.cards, card];
-
+        const columnCopy = deepCopy(selectedColumn);
+        columnCopy.cards=cards;
+        const addColumnStatus = await updateColumn(columnCopy.id, columnCopy);
+        if(addColumnStatus){
+          afterUpdateColumn(columns,selectedColumn,columnCopy,setColumns)
+          setCardModal(false);
+        }
       }
-      catch{
-
+      catch(error)
+      {
+        alert(error);
       }
 
     }  
@@ -104,26 +114,33 @@ export default function Board (props){
             ) :
         (<>
         { (columnModal)&&<CreateColumnModal addColumn={handleAddCloumn} closeColumnModal={closeColumnModal} />}
-          { (cardModal)&&<CreateCard  teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
-            <>
-             <div className="nav">
-                <h1 className="header">{props.location.state.boardName}</h1>
-                <button onClick={deleteBoardHandler}  className="delBoard">Delete Board</button>
-            </div>            
-             <div className="add">
-                <>
+          { (cardModal)&&<CreateCard addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
+            <div className={styles.container}>
+              <div className={styles.containerHeader}>
+                <h1 className={styles.headingtxt}>{props.location.state.boardName}</h1>
+                <button onClick={deleteBoardHandler}  className={styles.deleteBoard}>Delete Board</button>
+              </div>            
+             <div className={styles.ui}>
+                <div className={styles.columns}>
                 {columns.map(x=>(
-                <div key={x.name} className="colCard">
-                <h3  className="colTitle">{x.name}</h3>
+                
+                <div key={x.name} className={styles.column}>
+                <header>
+                
+                {x.name}
+                <div className={styles.trash}>
                 <i onClick={()=>deleteColumnHandler(x)} id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
-                <button onClick={()=>openAddCard(x)} className="cardBtn">Add a Card</button> 
+                </div>
+                </header>
+                
+                <footer><button onClick={()=>openAddCard(x)} className={styles.add}>Add a Card</button></footer>
                 </div>
             ))}
-            </>
-                 <button onClick={()=>setColumnModal(true)}  className="addBtn">Add a column</button>
-                
+            
+                 <button onClick={()=>setColumnModal(true)}  className={styles.addButton}>Add a column</button>
+                 </div>   
             </div>
-        </>
+        </div>
         </>)
 }  
         </>
@@ -136,3 +153,12 @@ async function getAllColumns(id, setColumns) {
     const resultColumns = await getColumns(id);
     setColumns(resultColumns);
   }
+
+//Function to have Updated Column
+function afterUpdateColumn(columns, selectedColumn, upColumn, setColumns) {
+  const nullColumns = columns.filter((x) =>x.id !== selectedColumn.id);
+  const newColumnsAfterCardAdd = [...nullColumns, upColumn];
+  newColumnsAfterCardAdd.sort((a, b) => a.created - b.created);
+  console.log(newColumnsAfterCardAdd);
+  setColumns(newColumnsAfterCardAdd);
+}  

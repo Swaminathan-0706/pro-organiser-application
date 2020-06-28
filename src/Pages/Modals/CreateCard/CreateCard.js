@@ -26,16 +26,17 @@ function CreateCard(props) {
         
     }
     //Function to add Card Data in Database
-    function addCardHandler(){
-        console.log("Add Card Handler");
-        const card = createCard(cardTitle, cardDesc, cardDueDate, cardMembers);
+    function addCardHandler(e){
+        e.preventDefault();
+        const card = createCard(cardDueDate,cardTitle,cardMembers,cardDesc);
+        props.addCard(card);
     }
      
     
      return (
         <div>
          <Backdrop/>  
-         <form onClick={addCardHandler} className="cardModal">
+         <form onSubmit={(e)=>addCardHandler(e)} className="cardModal">
                 <div className="colHeader">
                     <span className="top">Add Card</span>
                     <button onClick={()=>props.closeCardModal()} id="close">x</button>
