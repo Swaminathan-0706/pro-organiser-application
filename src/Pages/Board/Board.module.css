@@ -1,12 +1,13 @@
 .container{
   margin-left: 2.2rem;
+  
+  
 }
 .containerHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
   .containerHeader button {
     font-size: 15px;
   }
@@ -26,8 +27,9 @@
     cursor: pointer;
     box-shadow: 3px 3px black;
    }
+   
   .ui {
-    height: calc(100vh - 140px);
+    height: calc(100vh - 180px);
     display: grid;
     grid-template-rows: 1fr;
   }
@@ -54,7 +56,8 @@
   }
   
   .column {
-    width: 300px;
+    width: 17.5rem;
+    
     height: calc(100% - 27px);
   }
   
@@ -62,17 +65,21 @@
     line-height: 46px;
     font-size: 17px;
     font-weight: 500;
-    border-top-left-radius: 5px;
+    border-top-left-radius: 5px ;
     border-top-right-radius: 5px;
     position: relative;
     text-transform: capitalize;
+    
   }
   
   .trash {
     position: absolute;
     right: 10px;
-    top: 7px;
+    top: 1px;
     cursor: pointer;
+  }
+  .trash:hover{
+    color: red;
   }
   
   .column footer {
@@ -82,6 +89,7 @@
     color: #888;
     padding-top: 15px;
     padding-bottom: 15px;
+    
   }
   
   .column footer .add {
@@ -101,10 +109,10 @@
     color: white;
 }
   .column > * {
-    background: linear-gradient(150deg, #F4C724, transparent);
+    background-color: #F0DF87;
     color: #333;
     padding: 0 10px;
-    border: 1px solid black;
+    
   }
   
   .column ul {

@@ -116,6 +116,7 @@ export default function Board (props){
         { (columnModal)&&<CreateColumnModal addColumn={handleAddCloumn} closeColumnModal={closeColumnModal} />}
           { (cardModal)&&<CreateCard addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
             <div className={styles.container}>
+              
               <div className={styles.containerHeader}>
                 <h1 className={styles.headingtxt}>{props.location.state.boardName}</h1>
                 <button onClick={deleteBoardHandler}  className={styles.deleteBoard}>Delete Board</button>
@@ -133,14 +134,27 @@ export default function Board (props){
                 </div>
                 </header>
                 
-                <footer><button onClick={()=>openAddCard(x)} className={styles.add}>Add a Card</button></footer>
+                 <ul>
+                  {x.cards.map(y=>(
+                  <IndividualCard
+                  card={y}
+                  board={boardDetails}
+                  key={y.id}
+                  column={x}
+                  
+                  />
+                   )) }    
+                  </ul>   
+                 <footer><button onClick={()=>openAddCard(x)} className={styles.add}>Add a Card</button></footer>
                 </div>
+                
             ))}
             
                  <button onClick={()=>setColumnModal(true)}  className={styles.addButton}>Add a column</button>
                  </div>   
             </div>
         </div>
+        
         </>)
 }  
         </>
