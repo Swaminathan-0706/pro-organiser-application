@@ -135,6 +135,20 @@ export default function Board (props){
       }
 
     }
+    async function cardArchive(card, column) {
+      try {
+        card.isArchive = true;
+        const newCards = column.cards.filter((c) => c.id !== card.id);
+        const upColumn = deepCopy(column);
+        upColumn.cards = [...newCards, card];
+        const val = await updateColumn(column.id, upColumn);
+        if (val) {
+          afterUpdateColumn(columns, column, upColumn, setColumns);
+        }
+      } catch (error) {
+        alert(error);
+      }
+    }
     return(
         <>
         {loading ? (
@@ -163,14 +177,15 @@ export default function Board (props){
                 
                  <ul>
                   {x.cards.map(y=>(
+                  !y.isArchive && (  
                   <IndividualCard
                   card={y}
                   board={props.location.state.boardName}
                   key={y.id}
                   column={x}
                   handleEdit={()=>cardEdit(y,x)}
-                
-                  />
+                  handleArchive={() =>cardArchive(y, x)}
+                  />)
                    )) }    
                   </ul>   
                  <footer><button onClick={()=>openAddCard(x)} className={styles.add}>Add a Card</button></footer>

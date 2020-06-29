@@ -6,7 +6,7 @@ import {CardDetailModal} from './CardDetailModal/CardDetailModal';
 
 
 
-function IndividualCard({card,board,column,handleEdit}) {
+function IndividualCard({card,board,column,handleEdit,handleArchive}) {
   
 
   const [cardDetailModal,setCardDetailModal]=useState(false);
@@ -22,7 +22,7 @@ function IndividualCard({card,board,column,handleEdit}) {
 
   function cardArchiveHandler(){
     setCardDetailModal(false);
-    
+    handleArchive();
   }
   const detailsModal = (
     
