@@ -17,6 +17,7 @@ export default function Board (props){
     const [cardModal,setCardModal]=useState(false);
     const [selectedColumn, setSelectedColumn] = useState(null);
     const [editCard,setEditCard]=useState(null);
+    const [isCardAdd,setCardAdd]=useState(true);
    
     
 
@@ -54,10 +55,11 @@ export default function Board (props){
         
       }
       function openAddCard(selectedColumn) {
+        
         setCardModal(true);
         setSelectedColumn(selectedColumn);
         setEditCard(null);
-        
+        setCardAdd(true);
         
       }
      //Function to Add Card in Firestore
@@ -110,6 +112,7 @@ export default function Board (props){
       setSelectedColumn(column);
       setCardModal(true);
       setEditCard(card);
+      setCardAdd(false);
     }
 
     async function handleCardEdit(x){
@@ -125,6 +128,7 @@ export default function Board (props){
           setCardModal(false);
           setSelectedColumn(null);
           setEditCard(null);
+          setCardAdd(true);
         }
       } catch (error) {
         alert(error);
@@ -138,9 +142,8 @@ export default function Board (props){
             ) :
         (<>
         { (columnModal)&&<CreateColumnModal addColumn={handleAddCloumn} closeColumnModal={closeColumnModal} />}
-          { (cardModal)&&<CreateCard handle={handleCardEdit}addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
+          { (cardModal)&&<CreateCard card={editCard} isAdd={isCardAdd} handleEdit={handleCardEdit} addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
             <div className={styles.container}>
-              
               <div className={styles.containerHeader}>
                 <h1 className={styles.headingtxt}>{props.location.state.boardName}</h1>
                 <button onClick={deleteBoardHandler}  className={styles.deleteBoard}>Delete Board</button>

@@ -1,14 +1,23 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import styles from  './CreateCard.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
 function CreateCard(props) {
-    
+    const{card,isAdd}=props;
     const[cardTitle,setCardTitle]=useState('');
     const[cardDesc,setCardDesc]=useState('');
     const[cardDueDate,setDue]=useState('');
     const[cardMembers,setCardMembers]=useState([]);
 
+    useEffect(() => {
+        if (card) {
+          setCardTitle(card.title);
+          setCardDesc(card.description);
+          setCardMembers(card.teamMembers);
+          const date = new Date(card.date);
+          setDue(date.toISOString().substr(0, 10));
+        }
+      }, [isAdd, card]);
     //Function to get Team members
     const teamHandler=(e)=>{
         const values = [...e.target.selectedOptions].map(x => x.value);
@@ -31,14 +40,18 @@ function CreateCard(props) {
         const card = createCard(cardDueDate,cardTitle,cardMembers,cardDesc);
         props.addCard(card);
     }
-     
+     function editCardHandler(e){
+        e.preventDefault();
+        const card = createCard(cardDueDate,cardTitle,cardMembers,cardDesc);
+        props.handleEdit(card);
+     }
     
      return (
         <div>
          <Backdrop/>  
          <form onSubmit={(e)=>addCardHandler(e)} className={styles.cardModal}>
                 <div className={styles.colHeader}>
-                    <span className={styles.top}>Add Card</span>
+                    <span className={styles.top}>{(props.isAdd)?"Add Card":"Edit Card"}</span>
                     <button onClick={()=>props.closeCardModal()} id={styles.close}>x</button>
                 </div> 
                 <div className={styles.cardTitle}>
@@ -71,8 +84,9 @@ function CreateCard(props) {
                 <input value={cardDueDate} required onChange={dueDate} type="date" id={styles.due_date}></input>
                 </div>
                 <div className={styles.cardBtn}>
-                <button type="submit"  id={styles.CreateCard}>Add Card</button>  
-                <button type="submit"  id={styles.CreateCard}>Edit Card</button>  
+                {(props.isAdd)?
+                (<button type="submit"  id={styles.CreateCard}>Add Card</button>) 
+               :( <button onClick={(e)=>editCardHandler(e)}  id={styles.CreateCard}>Edit Card</button>)  }
                 </div>
          </form > 
         </div>
