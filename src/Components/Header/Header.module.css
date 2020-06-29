@@ -1,5 +1,5 @@
 .Navbar {
-    background: linear-gradient(45deg, #F4C724, transparent);
+    background: linear-gradient(45deg, #0ABDE3, transparent);
     height: 10vh;
     display: flex;
     align-items: center;
@@ -31,5 +31,5 @@
 
 .Active {
     color: #fff;
-    background-color: #F0DF87;
+    background-color: #0ABDE3;
 }

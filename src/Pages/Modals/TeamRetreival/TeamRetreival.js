@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './TeamRetreival.module.css';
 
 function TeamRetreival({name}) {
+    
     const arr = name.split(' ');
     let abbr = '';
     arr.forEach(element => {

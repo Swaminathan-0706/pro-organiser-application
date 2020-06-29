@@ -105,11 +105,11 @@
     text-align: center;
   }
   .column footer .add:hover{
-    background-color: rgb(42, 28, 28);
+    background-color:rgb(53, 36, 36);
     color: white;
 }
   .column > * {
-    background-color: #F0DF87;
+    background-color: #4BCFFA;
     color: #333;
     padding: 0 10px;
     
@@ -136,7 +136,7 @@
     font-weight: 400;
   }
   .addButton:hover{
-    background-color: rgb(42, 28, 28);
+    background-color:rgb(53, 36, 36);
     color: white;
   }
   

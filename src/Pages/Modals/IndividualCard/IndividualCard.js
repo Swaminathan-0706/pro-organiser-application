@@ -67,7 +67,7 @@ function IndividualCard({card,board,column}) {
           <div className={styles.actionBtn}>
             <i
               className="material-icons"
-              style={{ fontSize: '30px', cursor: 'move',color:'white' }}
+              style={{ fontSize: '30px', cursor: 'move' }}
             >
               list
             </i>

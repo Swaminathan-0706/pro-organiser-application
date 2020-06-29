@@ -5,12 +5,15 @@ import styles from "./CreateColumnModal.module.css";
 function CreateColumnModal(props) {
   const [colName, setColName] = useState("");
   //Function to call AddColumn function in parent Board
-  const addColumnHandler = () => {
+  const addColumnHandler = (e) => {
+    e.preventDefault();
     if (!colName) {
       alert("Please Enter Column Name");
     }
-
-    props.addColumn(colName);
+    else{
+      props.addColumn(colName);
+    }
+    
   };
   return (
     <>
@@ -20,7 +23,7 @@ function CreateColumnModal(props) {
           <span className={styles.top}>Add Column</span>
           <button
             onClick={() => props.closeColumnModal()}
-            className={styles.clos}
+            className={styles.closebtn}
           >
             x
           </button>
@@ -36,7 +39,7 @@ function CreateColumnModal(props) {
         </div>
         <div className={styles.colBtn}>
           <button
-            onClick={addColumnHandler}
+            onClick={(e)=>addColumnHandler(e)}
             className={styles.CreateColumn}
             id="CreateColumn"
           >

@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import './CreateCard.css';
+import styles from  './CreateCard.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
 function CreateCard(props) {
@@ -36,21 +36,21 @@ function CreateCard(props) {
      return (
         <div>
          <Backdrop/>  
-         <form onSubmit={(e)=>addCardHandler(e)} className="cardModal">
-                <div className="colHeader">
-                    <span className="top">Add Card</span>
-                    <button onClick={()=>props.closeCardModal()} id="close">x</button>
+         <form onSubmit={(e)=>addCardHandler(e)} className={styles.cardModal}>
+                <div className={styles.colHeader}>
+                    <span className={styles.top}>Add Card</span>
+                    <button onClick={()=>props.closeCardModal()} id={styles.close}>x</button>
                 </div> 
-                <div className="cardTitle">
-                <p id="ptag">Enter a title for your task</p>
-                <input required value={cardTitle} onChange={(e)=>setCardTitle(e.target.value)} type="text" id="title" placeholder="eg.Add a new icon"></input>
+                <div className={styles.cardTitle}>
+                <p id={styles.ptag}>Enter a title for your task</p>
+                <input required value={cardTitle} onChange={(e)=>setCardTitle(e.target.value)} type="text" id={styles.title} placeholder="eg.Add a new icon"></input>
                 </div>  
-                <div className="cardMembers">
-                     <p id="ptag">Choose members for this task,(select multiple if needed)</p> 
+                <div className={styles.cardMembers}>
+                     <p id={styles.ptag}>Choose members for this task,(select multiple if needed)</p> 
                         <select
                         multiple={true}
                         onChange={teamHandler}
-                        className="team"
+                        className={styles.team}
                         id="team" 
                         value={cardMembers} 
                         name="team" 
@@ -62,16 +62,16 @@ function CreateCard(props) {
                          ))}
                         </select>
                         </div>
-                <div className="cardDesc">
-                <p id="ptag">Add the description for your task</p> 
-                <input value={cardDesc} required onChange={(e)=>setCardDesc(e.target.value)} type="text" id="description" placeholder="eg.Add your description here"></input>  
+                <div className={styles.cardDesc}>
+                <p id={styles.ptag}>Add the description for your task</p> 
+                <input value={cardDesc} required onChange={(e)=>setCardDesc(e.target.value)} type="text" id={styles.description} placeholder="eg.Add your description here"></input>  
                 </div>
-                <div className="cardDate">
-                <p id="ptag">Select the due date for this task</p>   
-                <input value={cardDueDate} required onChange={dueDate} type="date" id="due_date"></input>
+                <div className={styles.cardDate}>
+                <p id={styles.ptag}>Select the due date for this task</p>   
+                <input value={cardDueDate} required onChange={dueDate} type="date" id={styles.due_date}></input>
                 </div>
-                <div className="cardBtn">
-                <button type="submit"  id="CreateCard">Add Card</button>  
+                <div className={styles.cardBtn}>
+                <button type="submit"  id={styles.CreateCard}>Add Card</button>  
                 </div>
          </form > 
         </div>
