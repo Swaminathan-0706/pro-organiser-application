@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './Modal.module.css';
+import styles from './CardDetailModal.module.css';
 
-export const Modal = ({ children }) => {
+export const CardDetailModal = ({ children }) => {
   return (
     <div className={styles.modalContainer}>
       <div className={styles.modal}>{children}</div>

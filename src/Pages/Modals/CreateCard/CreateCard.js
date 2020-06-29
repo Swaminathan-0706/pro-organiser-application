@@ -72,6 +72,7 @@ function CreateCard(props) {
                 </div>
                 <div className={styles.cardBtn}>
                 <button type="submit"  id={styles.CreateCard}>Add Card</button>  
+                <button type="submit"  id={styles.CreateCard}>Edit Card</button>  
                 </div>
          </form > 
         </div>

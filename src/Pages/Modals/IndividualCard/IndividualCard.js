@@ -1,35 +1,45 @@
 import React,{useState} from 'react';
 import styles from './IndividualCard.module.css';
 import TeamRetreival from '../TeamRetreival/TeamRetreival';
-import commonStyles from'../../../Components/Styles/styles.module.css';
-import {convertDateToNice} from '../../../Funct_Reuse/dateFunction';
-import {Modal} from './modal/Modal';
+import {convertDate} from '../../../Funct_Reuse/dateFunction';
+import {CardDetailModal} from './CardDetailModal/CardDetailModal';
 
 
 
-function IndividualCard({card,board,column}) {
+function IndividualCard({card,board,column,handleEdit}) {
+  
 
   const [cardDetailModal,setCardDetailModal]=useState(false);
   const members = card.teamMembers.map(name => <TeamRetreival name={name} key={name} />);
   const date = new Date(card.date);
-  const dueDate = convertDateToNice(date);
+  const dueDate = convertDate(date);
 
+  function cardEditHandler(){
+    setCardDetailModal(false);
+    handleEdit();
+    
+  }
+
+  function cardArchiveHandler(){
+    setCardDetailModal(false);
+    
+  }
   const detailsModal = (
     
-      <Modal>
+      <CardDetailModal>
       
       <div className={styles.modalHeader}>
         <div className={styles.title}>
           {card.title}
           <div className={styles.meta}>
-            in <span>{board.name}</span>
+            in <span>{board}</span>
           </div>
         </div>
         <div className={styles.btnGroup}>
-          <button className={commonStyles.info} >
+          <button className={styles.editBtn} onClick={cardEditHandler}>
             Edit
           </button>
-          <button className={commonStyles.danger} >
+          <button className={styles.archBtn} onClick={cardArchiveHandler}>
             Archive
           </button>
         </div>
@@ -52,7 +62,7 @@ function IndividualCard({card,board,column}) {
         </div>
       </div>
       
-      </Modal>
+      </CardDetailModal>
     
   );
     return (

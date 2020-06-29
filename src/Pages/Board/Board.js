@@ -16,6 +16,8 @@ export default function Board (props){
     const [columnModal,setColumnModal]=useState(false);
     const [cardModal,setCardModal]=useState(false);
     const [selectedColumn, setSelectedColumn] = useState(null);
+    const [editCard,setEditCard]=useState(null);
+   
     
 
     useEffect(() => {
@@ -54,6 +56,8 @@ export default function Board (props){
       function openAddCard(selectedColumn) {
         setCardModal(true);
         setSelectedColumn(selectedColumn);
+        setEditCard(null);
+        
         
       }
      //Function to Add Card in Firestore
@@ -70,6 +74,7 @@ export default function Board (props){
         if(addColumnStatus){
           afterUpdateColumn(columns,selectedColumn,columnCopy,setColumns)
           setCardModal(false);
+          
         }
       }
       catch(error)
@@ -78,10 +83,6 @@ export default function Board (props){
       }
 
     }  
-
-
-
-
      //Function to delete Board from Firestore
      async function deleteBoardHandler() {
         if (window.confirm('Are you sure you want to delete the board?'))
@@ -98,14 +99,37 @@ export default function Board (props){
       const newColumnAfterDelete=columns
       .filter(x=>x.id!==column.id)
       .sort((a,b)=>a.created-b.created);
-
       deleteColumn(column.id)
       .then(()=>{
         setColumns(newColumnAfterDelete);
       })
       .catch(error=>alert(error))
-      
-      
+    }
+    //Function to perform Edit Card
+    function cardEdit(card,column){
+      setSelectedColumn(column);
+      setCardModal(true);
+      setEditCard(card);
+    }
+
+    async function handleCardEdit(x){
+      try {
+        const card = { id: editCard.id, ...x };
+        const uColumn = deepCopy(selectedColumn);
+        const cards = selectedColumn.cards.filter((c) => c.id !== editCard.id);
+        const newCards = [...cards, card];
+        uColumn.cards = newCards;
+        const val = await updateColumn(selectedColumn.id, uColumn);
+        if (val) {
+          afterUpdateColumn(columns, selectedColumn, uColumn, setColumns);
+          setCardModal(false);
+          setSelectedColumn(null);
+          setEditCard(null);
+        }
+      } catch (error) {
+        alert(error);
+      }
+
     }
     return(
         <>
@@ -114,7 +138,7 @@ export default function Board (props){
             ) :
         (<>
         { (columnModal)&&<CreateColumnModal addColumn={handleAddCloumn} closeColumnModal={closeColumnModal} />}
-          { (cardModal)&&<CreateCard addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
+          { (cardModal)&&<CreateCard handle={handleCardEdit}addCard={handleAddCard} teamMembers={props.location.state.teamMembers}  closeCardModal={closeCardModal}/>}
             <div className={styles.container}>
               
               <div className={styles.containerHeader}>
@@ -138,10 +162,11 @@ export default function Board (props){
                   {x.cards.map(y=>(
                   <IndividualCard
                   card={y}
-                  board={boardDetails}
+                  board={props.location.state.boardName}
                   key={y.id}
                   column={x}
-                  
+                  handleEdit={()=>cardEdit(y,x)}
+                
                   />
                    )) }    
                   </ul>   

@@ -13,6 +13,6 @@ const months = [
     'December'
   ];
   
-  export const convertDateToNice = date => {
+  export const convertDate = date => {
     return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
   };
