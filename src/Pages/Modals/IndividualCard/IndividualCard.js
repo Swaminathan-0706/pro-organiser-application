@@ -8,7 +8,7 @@ import {CardDetailModal} from './CardDetailModal/CardDetailModal';
 
 function IndividualCard({card,board,column,handleEdit,handleArchive}) {
   
-
+  
   const [cardDetailModal,setCardDetailModal]=useState(false);
   const members = card.teamMembers.map(name => <TeamRetreival name={name} key={name} />);
   const date = new Date(card.date);
@@ -65,12 +65,20 @@ function IndividualCard({card,board,column,handleEdit,handleArchive}) {
       </CardDetailModal>
     
   );
+  //Function to call Drag Start of Card
+
+  function dragStart(event,card){
+    event.dataTransfer.setData("card",JSON.stringify(card));
+    event.dataTransfer.setData("columnFrom",JSON.stringify(column))
+  }
     return (
         <>
         
          <li
-        className={styles.item}
-        onClick={()=>setCardDetailModal(true)}
+          draggable="true"
+          onDragStart={(e)=>dragStart(e,card)}
+          className={styles.item}
+          onClick={()=>setCardDetailModal(true)}
         >
         <div className={styles.text}>{card.title}</div>
         <div className={styles.actions}>

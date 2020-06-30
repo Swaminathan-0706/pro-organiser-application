@@ -10,7 +10,7 @@ import IndividualCard from '../Modals/IndividualCard/IndividualCard';
 
 export default function Board (props){
     
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [boardDetails,setBoardDetails]=useState([]);
     const [columns, setColumns] = useState([]);
     const [columnModal,setColumnModal]=useState(false);
@@ -19,14 +19,13 @@ export default function Board (props){
     const [editCard,setEditCard]=useState(null);
     const [isCardAdd,setCardAdd]=useState(true);
    
-    
-
     useEffect(() => {
         (async function () {
+          
           const boardId = await getBoard(props.match.params.boardid);
           setBoardDetails(boardId);
           await getAllColumns(boardId.id, setColumns);
-          
+          setLoading(false);
         })();
       }, [props.match.params.boardid]);
 
@@ -64,8 +63,6 @@ export default function Board (props){
       }
      //Function to Add Card in Firestore
     async function handleAddCard(card){
-      console.log(card);
-      
       try
       {
         card['id'] = shortid();
@@ -114,7 +111,7 @@ export default function Board (props){
       setEditCard(card);
       setCardAdd(false);
     }
-
+    //Function to card Edit
     async function handleCardEdit(x){
       try {
         const card = { id: editCard.id, ...x };
@@ -135,6 +132,7 @@ export default function Board (props){
       }
 
     }
+    //Function to Card Handle Archive 
     async function cardArchive(card, column) {
       try {
         card.isArchive = true;
@@ -147,6 +145,31 @@ export default function Board (props){
         }
       } catch (error) {
         alert(error);
+      }
+    }
+    //Function for Drag and Drop of Cards
+    async function dragFunc(ev,newColumn){
+      try {
+        const card = JSON.parse(ev.dataTransfer.getData('card'));
+        const oldColumn = JSON.parse(ev.dataTransfer.getData('columnFrom'));
+        if (oldColumn.id === newColumn.id) {
+          return;
+        }
+        oldColumn.cards = oldColumn.cards.filter((c) => c.id !== card.id);
+        const val = await updateColumn(oldColumn.id, oldColumn);
+        newColumn.cards = [...newColumn.cards, card];
+        const val1 = await updateColumn(newColumn.id, newColumn);
+        if (val && val1) {
+          const newCols = columns.filter(
+            (col) => col.id !== oldColumn.id && col.id !== newColumn.id
+          );
+          const sortedCols = [...newCols, oldColumn, newColumn].sort(
+            (a, b) => a.created - b.created
+          );
+          setColumns(sortedCols);
+        }
+      } catch (error) {
+        alert(error)
       }
     }
     return(
@@ -165,10 +188,8 @@ export default function Board (props){
              <div className={styles.ui}>
                 <div className={styles.columns}>
                 {columns.map(x=>(
-                
-                <div key={x.name} className={styles.column}>
+                <div onDrop={(e)=>dragFunc(e,x)} onDragOver={(e)=>e.preventDefault()} key={x.name} className={styles.column}>
                 <header>
-                
                 {x.name}
                 <div className={styles.trash}>
                 <i onClick={()=>deleteColumnHandler(x)} id="trash" className="fa fa-trash fa-lg" aria-hidden="true"></i>
@@ -179,6 +200,7 @@ export default function Board (props){
                   {x.cards.map(y=>(
                   !y.isArchive && (  
                   <IndividualCard
+                  
                   card={y}
                   board={props.location.state.boardName}
                   key={y.id}

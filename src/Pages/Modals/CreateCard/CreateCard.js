@@ -3,7 +3,9 @@ import styles from  './CreateCard.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
 function CreateCard(props) {
+
     const{card,isAdd}=props;
+    
     const[cardTitle,setCardTitle]=useState('');
     const[cardDesc,setCardDesc]=useState('');
     const[cardDueDate,setDue]=useState('');
@@ -16,6 +18,7 @@ function CreateCard(props) {
           setCardMembers(card.teamMembers);
           const date = new Date(card.date);
           setDue(date.toISOString().substr(0, 10));
+          
         }
       }, [isAdd, card]);
     //Function to get Team members
@@ -39,15 +42,20 @@ function CreateCard(props) {
         e.preventDefault();
         const card = createCard(cardDueDate,cardTitle,cardMembers,cardDesc);
         props.addCard(card);
+        
     }
      function editCardHandler(e){
         e.preventDefault();
         const card = createCard(cardDueDate,cardTitle,cardMembers,cardDesc);
         props.handleEdit(card);
+        
      }
     
      return (
         <div>
+
+         {
+             <>
          <Backdrop/>  
          <form onSubmit={(e)=>addCardHandler(e)} className={styles.cardModal}>
                 <div className={styles.colHeader}>
@@ -88,7 +96,9 @@ function CreateCard(props) {
                 (<button type="submit"  id={styles.CreateCard}>Add Card</button>) 
                :( <button onClick={(e)=>editCardHandler(e)}  id={styles.CreateCard}>Edit Card</button>)  }
                 </div>
-         </form > 
+                </form >
+                </>}
+                
         </div>
     )
 }
