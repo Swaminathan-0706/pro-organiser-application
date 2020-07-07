@@ -64,7 +64,7 @@
     border: 1px solid black;
     font-size: 1rem;
     height: 1.5rem;
-    width: 32rem;
+    width: 90%;
     border-radius: 5px;
 }
 .middle{
@@ -84,3 +84,41 @@
     font-weight: 700;
     
 }
+
+/* Responsiveness */
+@media screen and (max-width: 576px) {
+    .colModal{
+    height: 200px;
+    position: fixed;
+    text-align:center;
+    width: 85%;
+    left:10%;
+    top: 20%;
+    }
+    .top{
+        font-size: 1rem;
+    }
+    .closebtn{
+        margin-left: 80%;
+    }
+    .middle{
+        font-size: 0.8rem;
+        font-family: Arial, Helvetica, sans-serif;
+    
+    }
+    .column_names{
+        width: 90%;
+    }
+  }
+  @media screen and (min-width: 577px){
+    .closebtn{
+        margin-left: 80%;
+    }
+    .top{
+        font-size: 1rem;
+    }
+    .colModal{
+        height: 220px;
+        
+        }
+  }
