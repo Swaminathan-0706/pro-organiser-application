@@ -107,4 +107,33 @@
     background-color: red;
     cursor: pointer;
  }
- 
+ /* Responsiveness */
+ @media screen and (max-width: 959px) {
+    .cardModal{
+    height: 600px;
+    position: fixed;
+    width: 90%;
+    left:9%;
+    top: 12%;
+    }
+    #close{
+        margin-left: 70%;
+    }
+    #title{
+        margin-left: 3%;
+        width: 90%;
+    }
+    #description{
+        margin-left: 3%;
+        width: 90%;
+    }
+    #due_date{
+        margin-left: 3%;
+        width: 90%;
+    }
+    .team{
+        margin-left: 3%;
+        width: 90%;
+    }
+  }
+  
