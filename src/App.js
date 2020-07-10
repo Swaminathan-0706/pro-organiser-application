@@ -7,19 +7,24 @@ import Create from './Pages/CreateBoard/CreateBoard';
 import Board from './Pages/Board/Board';
 import Login from './Pages/Login/Login';
 import SignUp from './Pages/SignUp/SignUp';
+import Authentication from './Context/Authentication';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
   return (
-    <Router>
-      <Header/>
-      <Switch>
-      <Route path="/signup" component={SignUp}/>
-      <Route path="/login" component={Login}/>
-      <Route path="/createboard" component={Create}/>
-      <Route path="/board/:boardid" component={Board}/>
-      <Route exact path="*" component={Home}/>
-      </Switch>
-    </Router>
+    <Authentication>
+      <Router>
+        <Header/>
+        <Switch>
+        <PrivateRoute exact path="/" component={Home} />
+        <PrivateRoute path="/createboard" component={Create}/>
+        <PrivateRoute path="/board/:boardid" component={Board}/>
+        <Route path="/signup" component={SignUp}/>
+        <Route path="/login" component={Login}/>
+        <Route exact path="*" component={Home}/>
+        </Switch>
+      </Router>
+    </Authentication>
   );
 }
 

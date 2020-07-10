@@ -21,9 +21,11 @@ export const addColumn = async (column) => {
 };
 //---------------------------------------------------------------------------------------------------
 //Function to get all getBoards Details from FireStore(Like API CALL)
-export const getBoards = async () => {
+export const getBoards = async (email) => {
   try {
-    const snapshot = await db.collection("boardDetails").get();
+    const snapshot = await db.collection("boardDetails")
+    .where('user', '==', email)
+    .get();
     const boards = snapshot.docs.map((x) =>({ ...x.data(), id: x.id }));
     return boards;
   } catch (error) {

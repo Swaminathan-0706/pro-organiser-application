@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styles from "./SignUp.module.css";
-import { Link } from "react-router-dom";
+import {withRouter} from 'react-router';
+import { Link ,Redirect} from "react-router-dom";
+import {firebaseApp} from '../../Firebase/config';
+import {AuthContext } from '../../Context/Authentication';
 
-function Signup() {
+function Signup({history}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,8 +14,29 @@ function Signup() {
   const handleSignUp=(e)=>{
       e.preventDefault();
       console.log(name,email,password);
-
-  }
+      firebaseApp
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(()=>{
+        const user = firebaseApp.auth().currentUser;
+        user
+          .updateProfile({ displayName: name })
+          .then(() => {
+            history.push('/');
+          })
+          .catch((err) => {
+            throw Error(err);
+          });
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+    }
+      const { currentUser } = useContext(AuthContext);
+      if (currentUser) {
+        return <Redirect to="/" />;
+      }
+  
   return (
     <form onSubmit={handleSignUp} className={styles.signupCtr}>
       <p className={styles.heading}>Sign Up</p>
@@ -41,4 +65,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default withRouter(Signup);

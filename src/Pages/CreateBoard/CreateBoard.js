@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styles from "./CreateBoard.module.css";
 import { addBoard } from "../../Funct_Reuse/Functions";
 import Loader from "../Modals/Loader/Loader";
+import {AuthContext} from '../../Context/Authentication';
 
 function CreateBoard(props) {
-  
+  const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [members, setMembers] = useState("");
@@ -15,6 +16,7 @@ function CreateBoard(props) {
     e.preventDefault();
     const team = members.split(",").map((x) => x.trim());
     const boardDetails = {
+      user: currentUser.email,
       boardName: name,
       teamMembers: team,
       boardType: type,

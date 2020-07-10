@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
 import { getBoards } from "../../Funct_Reuse/Functions";
 import Loader from "../Modals/Loader/Loader";
+import {AuthContext} from '../../Context/Authentication';
 
 function Home() {
-  
+  const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [boardData, setBoardData] = useState([]);
 
   useEffect(() => {
     //Function is defined in Function.js
-    getBoards()
+    getBoards(currentUser.email)
       .then((boardData) => {
         setBoardData(boardData);
         setLoading(false);
@@ -19,7 +20,7 @@ function Home() {
       .catch(() => {
         setBoardData([]);
       });
-  }, []);
+  }, [currentUser]);
 
   return (
     <>
