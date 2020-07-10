@@ -1,12 +1,12 @@
 import React,{useState,useContext} from "react";
 import styles from "../Header/Header.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 import {AuthContext} from '../../Context/Authentication';
 import { firebaseApp } from "../../Firebase/config";
 
 
 
-function Header() {
+const Header=() =>{
   
   const { currentUser } = useContext(AuthContext);
   const [isDropdown, setIsDropdown] = useState(false);
@@ -14,6 +14,7 @@ function Header() {
     setIsDropdown(!isDropdown);
     
   }
+  //Sign out function
   async function handleLogout() {
     await firebaseApp.auth().signOut();
     setIsDropdown(false);
@@ -21,10 +22,10 @@ function Header() {
   return (
     <>
       <div className={styles.Navbar}>
-        <NavLink exact to="/" className={styles.Title}>
+        <Link exact to="/" className={styles.Title}>
           Pro Organizer
-        </NavLink>
-        {currentUser && 
+        </Link>
+        {currentUser ? 
         (<div className={styles.NavItemContainer}>
           <NavLink exact to="/" activeClassName={styles.Active}>
             <div className={styles.NavItem}>Home</div>
@@ -35,10 +36,22 @@ function Header() {
           <li className={styles.anchor} onClick={toggleDropdown}>
           <div className={styles.NavItem}>{currentUser.email}</div>
           </li>
-          
-        
         </div>
-         ) }
+         ) :(
+          <>
+              <div className={styles.secondSet}>
+              <NavLink activeClassName={styles.Active} to="/login">
+                <div className={styles.NavItem}>Login</div>
+              </NavLink>
+            
+              <NavLink activeClassName={styles.Active} to="/signup">
+                <div className={styles.NavItem}>Sign Up</div>
+              </NavLink>
+              </div>
+            
+          </>
+        )
+         }
          {isDropdown && (
           <div className={styles.dropdownMenu}>
             <div className={styles.dropdownItem} onClick={handleLogout}>
