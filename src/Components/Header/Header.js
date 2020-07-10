@@ -16,9 +16,7 @@ function Header() {
           <NavLink to="/createboard" activeClassName={styles.Active}>
             <div className={styles.NavItem}>Create a Board</div>
           </NavLink>
-          <NavLink to="/signup" activeClassName={styles.Active}>
-            <div className={styles.NavItem}>Sign Up</div>
-          </NavLink>
+          
         </div>
       </div>
     </>

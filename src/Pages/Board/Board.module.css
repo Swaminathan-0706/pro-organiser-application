@@ -139,7 +139,7 @@
     background-color:rgb(53, 36, 36);
     color: white;
   }
-  
+  /* Responsiveness */
   @media screen and (max-width: 900px) {
     .container {
       padding: 15px;
