@@ -34,9 +34,13 @@
     border-radius: 5px;
     font-size: 1rem;
     margin-top: 0.5rem;
-    color: white;
-    background-color: teal;
+    color: black;
+    background: linear-gradient(45deg, #0ABDE3, transparent);
     cursor: pointer;
+}
+.group button:hover{
+    color: white;
+    background-color: black;
 }
 .footer{
     text-align: center;
@@ -45,13 +49,28 @@
 .link{
  color: blueviolet;
 }
+.google{
+    width:90%;
+    height:40px;
+    border: gray 1px solid;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 5px;
+}
+.google:hover{
+    background-color: black;
+    color: white;
+}
 /* Responsiveness */
 
 @media screen and (min-width: 320px) and (max-width:578px){
     .loginCtr{
         position: fixed;
         
-        left:15%;
+        left:10%;
         width: 300px;
         height:550px;
     

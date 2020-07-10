@@ -35,9 +35,13 @@
     border-radius: 5px;
     font-size: 1rem;
     margin-top: 0.5rem;
-    color: white;
-    background-color: teal;
+    color: black;
+    background: linear-gradient(45deg, #0ABDE3, transparent);
     cursor: pointer;
+}
+.group button:hover{
+    color: white;
+    background-color: black;
 }
 .footer{
     text-align: center;
